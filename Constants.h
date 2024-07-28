@@ -30,6 +30,9 @@
 #define FYSETC_S6_1                 15 // FYSETC S6 Version 1.2
 #define FYSETC_S6_2                 16 // FYSETC S6 Version 2.0
 
+// FYSETC S6 - 3D printer board that works with OnStep
+#define FYSETC_F6                   17 // FYSETC F6 Version 1.3
+
 // Mini - Small 2-axis design suitable for embedded or mounting behind a panel can even be built with connectors up
 #define MiniPCB                     20 // All for Teensy3.2
 #define MiniPCB13                   21 // MiniPCB v1.3 adds better support for ESP-01 flashing and optional I2C

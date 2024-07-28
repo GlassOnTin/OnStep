@@ -17,7 +17,7 @@
 //   *** to be sure it matches your wiring.            *** USE AT YOUR OWN RISK ***                                           ***
 
 //      Parameter Name              Value   Default  Notes                                                                      Hint
-#define PINMAP                        OFF //    OFF, Choose from: MksGenL2, MiniPCB2, MaxPCB2, MaxESP3, CNC3, STM32Blue,     <-Req'd
+#define PINMAP                  FYSETC_F6 //    OFF, Choose from: MksGenL2, MiniPCB2, MaxPCB2, MaxESP3, CNC3, STM32Blue,     <-Req'd
                                           //         MaxSTM3, FYSETC_S6_2, etc.  Other boards and more info. in Constants.h
 
 // SERIAL PORT COMMAND CHANNELS --------------------------- see https://onstep.groups.io/g/main/wiki/Configuration-Controller#SERIAL
@@ -26,6 +26,11 @@
 #define SERIAL_B_ESP_FLASHING         OFF //    OFF, ON Upload ESP8266 WiFi firmware through SERIAL_B with :ESPFLASH# cmd.    Option
 #define SERIAL_C_BAUD_DEFAULT         OFF //    OFF, n, ON for ESP32 Bluetooth.                                               Option
 #define SERIAL_C_BLUETOOTH_NAME  "OnStep" // "On..", Bluetooth device name for ESP32.                                         Option
+
+#include <NeoSWSerial.h>
+NeoSWSerial SoftwareSerial1( 19, 18 );
+#define SERIAL_GPS        SoftwareSerial1
+#define SERIAL_GPS_BAUD              9600
 
 // MOUNT TYPE ----------------------------------------- see https://onstep.groups.io/g/main/wiki/Configuration-Controller#MOUNT_TYPE
 #define MOUNT_TYPE                    GEM //    GEM, GEM for German Equatorial, FORK for Equatorial Fork, or ALTAZM          <-Req'd
@@ -39,7 +44,7 @@
 #define BUZZER_STATE_DEFAULT          OFF //    OFF, ON Start with piezo buzzer/speaker enabled.                              Option
 
 // TIME AND LOCATION ----------------------------------------- see https://onstep.groups.io/g/main/wiki/Configuration-Controller#TLS
-#define TIME_LOCATION_SOURCE          OFF //    OFF, DS3231 (I2c,) DS3234 (Spi,) TEENSY (T3.2 internal,) or GPS source.       Option
+#define TIME_LOCATION_SOURCE          GPS //    OFF, DS3231 (I2c,) DS3234 (Spi,) TEENSY (T3.2 internal,) or GPS source.       Option
                                           //         Provides Date/Time, and if available, PPS & Lat/Long also.
 
 // SENSORS ----------------------------------------------- see https://onstep.groups.io/g/main/wiki/Configuration-Controller#SENSORS
@@ -104,7 +109,7 @@
 #define STRICT_PARKING                OFF //    OFF, ON Un-parking is only allowed if successfully parked.                    Option
 
 // MOTION CONTROL ---------------------------------------------- see https://onstep.groups.io/g/main/wiki/Configuration-Mount#MOTION
-#define STEP_WAVE_FORM             SQUARE // SQUARE, PULSE Step signal wave form faster rates. SQUARE best signal integrity.  Adjust
+#define STEP_WAVE_FORM              PULSE // SQUARE, PULSE Step signal wave form faster rates. SQUARE best signal integrity.  Adjust
 
 // Stepper driver models (also see ~/OnStep/src/sd_drivers/Models.h for additional infrequently used models and more info.): 
 // A4988, DRV8825, LV8729, S109, SSS TMC2209*, TMC2130* **, and TMC5160* ***
@@ -123,14 +128,14 @@
 #define AXIS1_STEPS_PER_WORMROT         0 //      0, n. Number steps per worm rotation (PEC Eq mode only, 0 disables PEC.)   <-Req'd
                                           //         n = (AXIS1_STEPS_PER_DEGREE*360)/reduction_final_stage
 
-#define AXIS1_DRIVER_MODEL            OFF //    OFF, (See above.) Stepper driver model.                                      <-Often
-#define AXIS1_DRIVER_MICROSTEPS       OFF //    OFF, n. Microstep mode when tracking.                                        <-Often
-#define AXIS1_DRIVER_MICROSTEPS_GOTO  OFF //    OFF, n. Microstep mode used during gotos.                                     Option
+#define AXIS1_DRIVER_MODEL        TMC5160 //    OFF, (See above.) Stepper driver model.                                      <-Often
+#define AXIS1_DRIVER_MICROSTEPS        32 //    OFF, n. Microstep mode when tracking.                                        <-Often
+#define AXIS1_DRIVER_MICROSTEPS_GOTO    4 //    OFF, n. Microstep mode used during gotos.                                     Option
 #define AXIS1_DRIVER_IHOLD            OFF //    OFF, n, (mA.) Current during standstill. OFF uses IRUN/2.0                    Option
-#define AXIS1_DRIVER_IRUN             OFF //    OFF, n, (mA.) Current during tracking, appropriate for stepper/driver/etc.    Option
+#define AXIS1_DRIVER_IRUN            1500 //    OFF, n, (mA.) Current during tracking, appropriate for stepper/driver/etc.    Option
 #define AXIS1_DRIVER_IGOTO            OFF //    OFF, n, (mA.) Current during slews. OFF uses same as IRUN.                    Option
 #define AXIS1_DRIVER_REVERSE          OFF //    OFF, ON Reverses movement direction, or reverse wiring instead to correct.   <-Often
-#define AXIS1_DRIVER_STATUS           OFF //    OFF, TMC_SPI, HIGH, or LOW.  Polling for driver status info/fault detection.  Option
+#define AXIS1_DRIVER_STATUS       TMC_SPI //    OFF, TMC_SPI, HIGH, or LOW.  Polling for driver status info/fault detection.  Option
 
 #define AXIS1_LIMIT_MIN              -180 //   -180, n. Where n= -90..-270 (degrees.) Minimum "Hour Angle" for Eq modes.      Adjust
                                           //         n. Where n=-180..-360 (degrees.) Minimum Azimuth for AltAzm mode.
@@ -142,15 +147,15 @@
 #define AXIS2_STEPS_PER_DEGREE    12800.0 //  12800, n. Number of steps per degree:                                          <-Req'd
                                           //         n = (stepper_steps * micro_steps * overall_gear_reduction)/360.0
 
-#define AXIS2_DRIVER_MODEL            OFF //    OFF, (See above.) Stepper driver model.                                      <-Often
-#define AXIS2_DRIVER_MICROSTEPS       OFF //    OFF, n. Microstep mode when tracking.                                        <-Often
-#define AXIS2_DRIVER_MICROSTEPS_GOTO  OFF //    OFF, n. Microstep mode used during gotos.                                     Option
+#define AXIS2_DRIVER_MODEL        TMC5160 //    OFF, (See above.) Stepper driver model.                                      <-Often
+#define AXIS2_DRIVER_MICROSTEPS        32 //    OFF, n. Microstep mode when tracking.                                        <-Often
+#define AXIS2_DRIVER_MICROSTEPS_GOTO    4 //    OFF, n. Microstep mode used during gotos.                                     Option
 #define AXIS2_DRIVER_IHOLD            OFF //    OFF, n, (mA.) Current during standstill. OFF uses IRUN/2.0                    Option
-#define AXIS2_DRIVER_IRUN             OFF //    OFF, n, (mA.) Current during tracking, appropriate for stepper/driver/etc.    Option
+#define AXIS2_DRIVER_IRUN            1500 //    OFF, n, (mA.) Current during tracking, appropriate for stepper/driver/etc.    Option
 #define AXIS2_DRIVER_IGOTO            OFF //    OFF, n, (mA.) Current during slews. OFF uses same as IRUN.                    Option
 #define AXIS2_DRIVER_POWER_DOWN       OFF //    OFF, ON Powers off 10sec after movement stops or 10min after last<=1x guide.  Option
 #define AXIS2_DRIVER_REVERSE          OFF //    OFF, ON Reverses movement direction, or reverse wiring instead to correct.   <-Often
-#define AXIS2_DRIVER_STATUS           OFF //    OFF, TMC_SPI, HIGH, or LOW.  Polling for driver status info/fault detection.  Option
+#define AXIS2_DRIVER_STATUS       TMC_SPI //    OFF, TMC_SPI, HIGH, or LOW.  Polling for driver status info/fault detection.  Option
 #define AXIS2_TANGENT_ARM             OFF //    OFF, ON +limit range below. Set cntr w/[Reset Home] Return cntr w/[Find Home] Infreq
 
 #define AXIS2_LIMIT_MIN               -90 //    -90, n. Where n=-90..0 (degrees.) Minimum allowed declination.                Infreq

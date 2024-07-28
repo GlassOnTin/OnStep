@@ -73,6 +73,10 @@
   #define PINMAP_STR "STM32 Bluepill"
   #include "Pins.STM32B.h"
 #endif
+#if PINMAP == FYSETC_F6
+  #define PINMAP_STR "FYSETC F6"
+  #include "Pins.FYSETC_F6.h"
+#endif
 #if PINMAP == FYSETC_S6
   #define PINMAP_STR "FYSETC S6"
   #include "Pins.FYSETC_S6.h"

@@ -62,6 +62,9 @@
 #if PINMAP == STM32Blue
   #include "Validate.STM32Blue.h"
 #endif
+#if PINMAP == FYSETC_F6
+  #include "Validate.FYSETC_F6.h"
+#endif
 #if PINMAP == FYSETC_S6
   #include "Validate.FYSETC_S6.h"
 #endif
